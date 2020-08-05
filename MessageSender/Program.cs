@@ -18,14 +18,13 @@ namespace MessageSender
                 o.Password = "test";
             });
             services.AddScoped<MyMessagingClient>();
-            services.AddScoped<DigitCreation>();
 
-            while(true)
+            var client = services.BuildServiceProvider().GetRequiredService<MyMessagingClient>();
+            var i = 0;
+            while (true)
             {
-                var provider = services.BuildServiceProvider().GetRequiredService<IServiceProvider>();
-                using var scope = provider.CreateScope();
-                var client = scope.ServiceProvider.GetRequiredService< DigitCreation>();
-                client.Start();
+                Console.WriteLine($"Sending {i}");
+                client.SendDigit(i++);
                 Thread.Sleep(100);
             }
         }
